@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para Paola 🕸️</title>
+  <!-- Bootstrap 5.3.3 CSS -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+    crossorigin="anonymous"
+  />
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="icon" type="image/x-icon" href="favicon/Spider-Man.ico">
+</head>
+<body class="overflow-hidden">
+  <!-- Lienzo principal (ciudad, puente, corazón, letras y araña) -->
+  <canvas id="escena"></canvas>
+
+  <!-- Lienzo exclusivo para los hilos que sostienen la nota -->
+  <canvas class="capa-telarana-nota" id="hilosNotaCanvas"></canvas>
+
+  <!-- Barra inferior responsiva -->
+  <div class="barra-inferior container-fluid px-3" id="barraInferior">
+    <div class="d-flex flex-column align-items-center gap-2">
+      <div class="d-flex align-items-center gap-2">
+        <button class="btn btn-nota rounded-pill px-4 py-2" id="btnAbrir" type="button">
+          Leer nota 🕸️
+        </button>
+        <button
+          class="btn btn-audio rounded-circle"
+          id="btnAudio"
+          type="button"
+          title="Activar / Pausar música"
+          aria-label="Activar o pausar música"
+        >
+          🔇
+        </button>
+      </div>
+      <p class="pista mb-0 text-center">Toca la pantalla para lanzar más telarañas</p>
+    </div>
+  </div>
+
+  <!-- Contenedor de la nota colgante -->
+  <div class="colgante-wrapper container-fluid px-3" id="colganteWrapper" role="dialog" aria-modal="true">
+    <div class="row justify-content-center w-100 m-0">
+      <div class="col-12 col-sm-10 col-md-7 col-lg-5 p-0">
+        <div class="tarjeta-nota shadow-lg" id="tarjetaNota">
+          <span class="anclaje-izq" aria-hidden="true"></span>
+          <span class="anclaje-der" aria-hidden="true"></span>
+
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h2 class="h5 mb-0 fw-semibold">Para ti</h2>
+            <svg class="sello-arana" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 7.5c-1.4 0-2.5 1.1-2.5 2.5 0 .7.3 1.3.7 1.8-.8.7-1.2 1.8-1.2 3 0 2.1 1.3 3.7 3 3.7s3-1.6 3-3.7c0-1.2-.4-2.3-1.2-3 .4-.5.7-1.1.7-1.8 0-1.4-1.1-2.5-2.5-2.5zm-7.5-2 3.6 3.2.9-1-3.1-3.6-1.4 1.4zm15 0-1.4-1.4-3.1 3.6.9 1 3.6-3.2zM3 11.5v2h5.2v-2H3zm12.8 0v2H21v-2h-5.2zM4.5 18.5l1.4 1.4 3.2-3.5-.9-1-3.7 3.1zm15 0-3.7-3.1-.9 1 3.2 3.5 1.4-1.4z"/>
+            </svg>
+          </div>
+
+          <p class="texto-nota mb-3" id="textoNota"></p>
+
+          <button class="btn btn-cerrar w-100 py-2" id="btnCerrar" type="button">
+            Subir / Volver
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5.3.3 JS Bundle -->
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"
+  ></script>
+  <script src="js/script.js"></script>
+</body>
+</html>

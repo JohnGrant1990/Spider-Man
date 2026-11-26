@@ -1,0 +1,289 @@
+:root {
+  --spidey-red: #e11d48;
+  --spidey-red-bright: #ff2449;
+  --spidey-blue-dark: #061026;
+  --spidey-blue-mid: #0c224d;
+  --web-white: #f8fafc;
+  --glass-bg: rgba(9, 20, 48, 0.94);
+  --glass-border: rgba(255, 36, 73, 0.48);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(225, 29, 72, 0.16) 0%,
+      rgba(12, 34, 77, 0.42) 42%,
+      var(--spidey-blue-dark) 82%
+    ),
+    linear-gradient(180deg, #040b1c 0%, var(--spidey-blue-mid) 58%, #050d21 100%);
+  height: 100vh;
+  height: 100dvh;
+  font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--web-white);
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  position: relative;
+}
+
+/* Patrón geométrico de telaraña tipo traje de Spider-Man */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220' viewBox='0 0 220 220'%3E%3Cg fill='none' stroke='%23e2e8f0' stroke-width='0.95'%3E%3Cpath d='M110 0 L110 220 M0 110 L220 110 M0 0 L220 220 M220 0 L0 220'/%3E%3Cpath d='M110 72 Q137 83 148 110 Q137 137 110 148 Q83 137 72 110 Q83 83 110 72 Z'/%3E%3Cpath d='M110 35 Q163 57 185 110 Q163 163 110 185 Q57 163 35 110 Q57 57 110 35 Z'/%3E%3Cpath d='M110 2 Q186 34 218 110 Q186 186 110 218 Q34 186 2 110 Q34 34 110 2 Z'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 220px 220px;
+}
+
+canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.capa-telarana-nota {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 18;
+}
+
+/* Barra inferior */
+.barra-inferior {
+  position: fixed;
+  bottom: max(18px, env(safe-area-inset-bottom));
+  left: 0;
+  z-index: 5;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.9s ease, transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.barra-inferior.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.btn-nota,
+.btn-audio {
+  pointer-events: auto;
+  background: linear-gradient(
+    135deg,
+    rgba(225, 29, 72, 0.88),
+    rgba(13, 38, 89, 0.94)
+  );
+  border: 1.5px solid rgba(255, 255, 255, 0.36);
+  box-shadow:
+    0 8px 22px rgba(225, 29, 72, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 600;
+  letter-spacing: 0.35px;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition:
+    background 0.25s ease,
+    transform 0.18s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.btn-audio {
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+}
+
+.btn-nota:hover,
+.btn-audio:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 36, 73, 0.96),
+    rgba(29, 78, 216, 0.95)
+  );
+  border-color: #ffffff;
+  box-shadow: 0 10px 26px rgba(255, 36, 73, 0.45);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.btn-nota:active,
+.btn-audio:active {
+  transform: scale(0.96);
+}
+
+.pista {
+  font-size: 0.78rem;
+  color: rgba(219, 234, 254, 0.72);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.65);
+}
+
+/* Nota colgante sostenida por telarañas */
+.colgante-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 20;
+  pointer-events: none;
+  transform: translate3d(0, -120%, 0);
+  transform-origin: 50% 0%;
+  will-change: transform;
+}
+
+.colgante-wrapper.activa {
+  pointer-events: auto;
+}
+
+.tarjeta-nota {
+  background: linear-gradient(
+    165deg,
+    var(--glass-bg),
+    rgba(5, 12, 28, 0.98)
+  );
+  border: 1.5px solid var(--glass-border);
+  border-radius: 18px;
+  padding: 24px 22px 20px;
+  position: relative;
+  cursor: grab;
+  box-shadow:
+    0 24px 60px rgba(2, 6, 23, 0.82),
+    0 0 28px rgba(225, 29, 72, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+.tarjeta-nota:active {
+  cursor: grabbing;
+}
+
+/* Puntos de sujeción de las telarañas superiores */
+.anclaje-izq,
+.anclaje-der {
+  position: absolute;
+  top: -6px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 2px solid var(--spidey-red-bright);
+  box-shadow:
+    0 0 10px rgba(255, 255, 255, 0.9),
+    0 0 16px rgba(255, 36, 73, 0.55);
+}
+
+.anclaje-izq {
+  left: 36px;
+}
+
+.anclaje-der {
+  right: 36px;
+}
+
+.sello-arana {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+  color: var(--spidey-red-bright);
+  filter: drop-shadow(0 0 8px rgba(255, 36, 73, 0.6));
+}
+
+.texto-nota {
+  font-size: 0.96rem;
+  line-height: 1.65;
+  color: rgba(248, 250, 252, 0.93);
+  white-space: pre-line;
+  max-height: 46vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* Scrollbar sutil por si el mensaje es largo */
+.texto-nota::-webkit-scrollbar {
+  width: 5px;
+}
+
+.texto-nota::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 999px;
+}
+
+.texto-nota::-webkit-scrollbar-thumb {
+  background: rgba(255, 36, 73, 0.45);
+  border-radius: 999px;
+}
+
+.btn-cerrar {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 36, 73, 0.45);
+  background: rgba(225, 29, 72, 0.16);
+  color: var(--web-white);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn-cerrar:hover {
+  background: rgba(225, 29, 72, 0.34);
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
+}
+
+.btn-cerrar:active {
+  transform: scale(0.98);
+}
+
+/* Ajustes para celulares */
+@media (max-width: 576px) {
+  body::before {
+    background-size: 170px 170px;
+  }
+
+  .tarjeta-nota {
+    padding: 20px 18px 16px;
+    border-radius: 16px;
+  }
+
+  .anclaje-izq {
+    left: 26px;
+  }
+
+  .anclaje-der {
+    right: 26px;
+  }
+
+  .texto-nota {
+    font-size: 0.91rem;
+    line-height: 1.58;
+    max-height: 42vh;
+  }
+
+  .btn-nota {
+    font-size: 0.88rem;
+  }
+}
